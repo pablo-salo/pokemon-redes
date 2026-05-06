@@ -12,14 +12,65 @@
   .screen { display: none; }
   .screen.active { display: block; }
 
-  /* ARENA */
-  .battle-arena { background: #B5D4F4; border-radius: 12px; overflow: hidden; margin-bottom: 0.75rem; }
-  .arena-sky { height: 160px; position: relative; display: flex; align-items: flex-end; justify-content: space-between; padding: 0 1rem 0.5rem; background: #B5D4F4; }
-  .arena-ground { background: #9FE1CB; height: 12px; border-top: 2px solid #5DCAA5; }
+ 
+/* ARENA MODIFICADA: DATA CENTER */
+  .battle-arena { 
+    background: #0d1117; /* Color oscuro de servidor */
+    border-radius: 12px; 
+    overflow: hidden; 
+    margin-bottom: 0.75rem; 
+    border: 2px solid #30363d;
+  }
+  .arena-sky { 
+    height: 180px; /* Más alto para que quepan bien las imágenes */
+    position: relative; 
+    display: flex; 
+    align-items: flex-end; 
+    justify-content: space-between; 
+    padding: 0 1rem 0.5rem; 
+    
+    /* Dibujando Racks y luces LED con CSS */
+    background-color: #0d1117;
+    background-image: 
+      radial-gradient(circle at 10% 30%, rgba(46, 204, 113, 0.4) 2px, transparent 3px),
+      radial-gradient(circle at 10% 50%, rgba(46, 204, 113, 0.4) 2px, transparent 3px),
+      radial-gradient(circle at 90% 30%, rgba(52, 152, 219, 0.4) 2px, transparent 3px),
+      radial-gradient(circle at 90% 70%, rgba(231, 76, 60, 0.4) 2px, transparent 3px),
+      linear-gradient(90deg, rgba(255,255,255,0.03) 30px, transparent 30px),
+      linear-gradient(rgba(255,255,255,0.03) 2px, transparent 2px);
+    background-size: 80px 100%, 80px 100%, 80px 100%, 80px 100%, 80px 100%, 100% 20px;
+  }
+  .arena-ground { 
+    background: #161b22; 
+    height: 20px; 
+    border-top: 3px solid #30363d; 
+    box-shadow: inset 0 10px 15px rgba(0,0,0,0.5);
+  }
 
-  .enemy-side { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; flex: 1; }
-  .player-side { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; flex: 1; }
+  .enemy-side { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; flex: 1; z-index: 10; }
+  .player-side { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; flex: 1; z-index: 10; }
 
+ /* SPRITES MODIFICADOS PARA IMÁGENES */
+  .pokemon-sprite { 
+    width: 100px; 
+    height: 100px;
+    display: block; 
+    animation: idle 2s ease-in-out infinite; 
+    filter: drop-shadow(0px 10px 5px rgba(0,0,0,0.5)); /* Sombra realista */
+  }
+  /* Quitamos el scaleX(-1) para que no se volteen los textos de los robots si los tienen */
+  .pokemon-sprite.attack-anim { animation: attack 0.4s ease; }
+  .pokemon-sprite.hit-anim { animation: hit 0.4s ease; }
+  .pokemon-sprite.faint-anim { animation: faint 0.6s ease forwards; }
+  
+  @keyframes idle { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+  @keyframes attack { 0% { transform: translateX(0) scale(1); } 30% { transform: translateX(30px) scale(1.1); } 100% { transform: translateX(0) scale(1); } }
+  @keyframes hit { 0%,100% { filter: brightness(1); } 30%,70% { filter: brightness(2) invert(1); transform: translateX(-5px); } }
+  @keyframes faint { 0% { transform: translateY(0); opacity: 1; filter: grayscale(0%); } 100% { transform: translateY(50px); opacity: 0; filter: grayscale(100%); } }
+
+
+
+ 
   .poke-info-box { background: #fff; border: 1px solid #ccc; border-radius: 8px; padding: 6px 10px; min-width: 160px; }
   .poke-name { font-size: 13px; font-weight: 600; color: #1a1a1a; margin-bottom: 2px; }
   .poke-level { font-size: 11px; color: #666; }
@@ -182,8 +233,8 @@
             <div class="hp-label" id="enemy-hp-label">HP: 100/100</div>
           </div>
         </div>
-        <div id="enemy-sprite" class="pokemon-sprite enemy">🖥️</div>
-        <div id="player-sprite" class="pokemon-sprite">💻</div>
+        <img id="enemy-sprite" class="pokemon-sprite" src="" alt="Rival">
+        <img id="player-sprite" class="pokemon-sprite" src="" alt="Jugador">
         <div class="player-side">
           <div class="poke-info-box">
             <div style="display:flex;justify-content:space-between;align-items:center">
@@ -312,8 +363,6 @@ const QS = [
   {e:"¿Qué flag TCP señala inicio de conexión?",o:["FIN","SYN","RST","URG"],c:1,type:"electrico"},
   {e:"TFTP usa por defecto:",o:["69/UDP","69/TCP","20/TCP","445/TCP"],c:0,type:"electrico"},
   {e:"En HSRP, 'preempt' implica:",o:["Evitar root bridge","Tomar rol activo con mayor prioridad","Bloquear grupo","Reiniciar HSRP"],c:1,type:"fuego"},
- // ─── MEGA BANCO DE PREGUNTAS (MODO EXAMEN) ──────────────────────────────────
-const QS = [
   // --- CAPA 2: SWITCHING, VLANS Y STP ---
   {e:"¿Qué protocolo marca las tramas con etiquetas VLAN en un enlace troncal?",o:["ISL","IEEE 802.1Q (Dot1Q)","STP","VTP"],c:1,type:"agua"},
   {e:"En el protocolo STP (802.1D), ¿cómo se llaman los mensajes que intercambian los switches?",o:["LSA","DORA","BPDU (Bridge Protocol Data Units)","Hello Packets"],c:2,type:"planta"},
@@ -352,28 +401,25 @@ const QS = [
   {e:"¿Qué tipo de fibra óptica utiliza láser y es para largas distancias?",o:["MMF (Multimodo)","UTP","SMF (Monomodo)","STP"],c:2,type:"psiquico"},
   {e:"¿Qué significa el acrónimo SFP en conmutación?",o:["Switch Fast Protocol","Small Form-factor Pluggable","Spanning Forwarding Path","Secure File Protocol"],c:1,type:"planta"}
 ];
-];
 
-// ─── POKÉMON ─────────────────────────────────────────────────────────────────
+// ─── POKÉMON (MODO IMÁGENES ROBOHASH) ─────────────────────────────────────────
 const POKEMONS = [
-  {name:"OSI-mon",    emoji:"📡", type:"planta",    hp:100, atk:15},
-  {name:"RouterByte", emoji:"🖧",  type:"psiquico",  hp:90,  atk:18},
-  {name:"SwitchCraft",emoji:"🔀", type:"agua",      hp:110, atk:12},
-  {name:"FireWallrus",emoji:"🔥", type:"fuego",     hp:80,  atk:22},
-  {name:"PacketPika", emoji:"⚡",  type:"electrico", hp:85,  atk:20},
-  {name:"VLANeon",    emoji:"💎", type:"agua",      hp:95,  atk:14},
-  {name:"SpanTree",   emoji:"🌲", type:"planta",    hp:120, atk:10},
-  {name:"BGPidgeot",  emoji:"🦅", type:"psiquico",  hp:88,  atk:19},
-  {name:"ACLizard",   emoji:"🦎", type:"fuego",     hp:92,  atk:16},
-  {name:"DHCPeon",    emoji:"🔑", type:"planta",    hp:100, atk:13},
-  {name:"NATviper",   emoji:"🐍", type:"agua",      hp:98,  atk:15},
-  {name:"TCPidna",    emoji:"🌊", type:"agua",      hp:105, atk:11},
+  {name:"OSPF-mon", img:"https://robohash.org/OSPF-mon?set=set1&size=150x150", type:"planta",    hp:100, atk:15},
+  {name:"RouterByte", img:"https://robohash.org/RouterByte?set=set2&size=150x150",  type:"psiquico",  hp:90,  atk:18},
+  {name:"SwitchCraft",img:"https://robohash.org/SwitchCraft?set=set3&size=150x150", type:"agua",      hp:110, atk:12},
+  {name:"FireWallrus",img:"https://robohash.org/Firewall?set=set1&size=150x150", type:"fuego",     hp:80,  atk:22},
+  {name:"VLANCopter", img:"https://robohash.org/VLAN?set=set2&size=150x150", type:"agua",      hp:95,  atk:14},
+  {name:"SpanTree",   img:"https://robohash.org/STP?set=set1&size=150x150", type:"planta",    hp:120, atk:10},
+  {name:"BGPidgeot",  img:"https://robohash.org/BGP?set=set3&size=150x150", type:"psiquico",  hp:88,  atk:19},
+  {name:"DHCPeon",    img:"https://robohash.org/DHCP?set=set2&size=150x150", type:"planta",    hp:100, atk:13},
+  {name:"NATviper",   img:"https://robohash.org/NAT?set=set1&size=150x150", type:"agua",      hp:98,  atk:15},
+  {name:"TCPidna",    img:"https://robohash.org/TCP?set=set3&size=150x150", type:"agua",      hp:105, atk:11},
 ];
 
 const PLAYER_POKEMONS = [
-  {name:"NetBuddy",  emoji:"💻", type:"electrico", hp:100, atk:15},
-  {name:"Routerchu", emoji:"⚡",  type:"electrico", hp:90,  atk:18},
-  {name:"FireWallix",emoji:"🔥", type:"fuego",     hp:85,  atk:20},
+  {name:"NetBuddy",  img:"https://robohash.org/AshRouter?set=set1&size=150x150", type:"electrico", hp:100, atk:15},
+  {name:"CiscoChu", img:"https://robohash.org/MistySwitch?set=set2&size=150x150",  type:"electrico", hp:90,  atk:18},
+  {name:"FortiWallix",img:"https://robohash.org/BrockFW?set=set1&size=150x150", type:"fuego",     hp:85,  atk:20},
 ];
 
 const TYPE_COLORS = {
@@ -445,8 +491,8 @@ function startBattle() {
   G.enemyMaxHP    = Math.round(G.enemyPoke.hp * (1 + G.rival * 0.3));
   G.enemyHP       = G.enemyMaxHP;
 
-  document.getElementById('player-sprite').textContent = G.playerPoke.emoji;
-  document.getElementById('enemy-sprite').textContent  = G.enemyPoke.emoji;
+  document.getElementById('player-sprite').src = G.playerPoke.img;
+  document.getElementById('enemy-sprite').src  = G.enemyPoke.img;
   document.getElementById('player-name').textContent   = G.playerPoke.name;
   document.getElementById('enemy-name').textContent    = G.enemyPoke.name;
   document.getElementById('player-lv').textContent     = 'Nv.' + G.playerLv;
